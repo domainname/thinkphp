@@ -148,6 +148,24 @@ class Template
         $tmplContent = '<?php if (!defined(\'THINK_PATH\')) exit();?>' . $tmplContent;
         // 优化生成的php代码
         $tmplContent = str_replace('?><?php', '', $tmplContent);
+    
+        /*
+            ======== Hack =========
+            PHP的?>后面的紧跟的回车会被PHP解析器给吃掉，例如以下代码：
+                <?php echo "hello" ?>
+                world
+            PHP解析器解析执行后，输出
+                helloworld
+            而不是
+                hello
+                world
+            “The closing tag for the block will include the immediately trailing newline if one is present.”
+                节选自：http://php.net/manual/en/language.basic-syntax.instruction-separation.php
+            因此，我们要人为的增加一个回车
+        */
+        $tmplContent = str_replace("?>\n","?>\n\n",$tmplContent);
+        $tmplContent = str_replace("?>\r\n","?>\r\n\r\n",$tmplContent);
+        
         // 模版编译过滤标签
         Hook::listen('template_filter', $tmplContent);
         return strip_whitespace($tmplContent);
