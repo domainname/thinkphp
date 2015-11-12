@@ -59,7 +59,7 @@ class Model
     // 是否自动检测数据表字段信息
     protected $autoCheckFields = true;
     // 是否批处理验证
-    protected $patchValidate = false;
+    protected $patchValidate = true;
     // 链操作方法列表
     protected $methods = array('strict', 'order', 'alias', 'having', 'group', 'lock', 'distinct', 'auto', 'filter', 'validate', 'result', 'token', 'index', 'force');
 
